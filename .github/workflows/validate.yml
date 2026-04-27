@@ -1,0 +1,23 @@
+name: ShellCheck
+
+on:
+    push:
+        branches: [main]
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instala ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+  
+      - name: Ejecuta ShellCheck en archivos .sh
+        run: |
+          files=$(find . -type f -name "*.sh")
+          if [ -z "$files" ]; then
+            echo "No hay archivos .sh"
+            exit 0
+          fi
+          shellcheck $files
